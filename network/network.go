@@ -8,9 +8,13 @@ import (
 	"github.com/nem0z/dlchat/handlers"
 )
 
+type peer struct {
+	conn net.Conn
+	ch   chan bool
+}
 type Network struct {
 	ln     net.Listener
-	peers  []chan bool
+	peers  []*peer
 	router map[string]handlers.Handler
 }
 
@@ -23,7 +27,7 @@ func Init(port int) (*Network, error) {
 
 	return &Network{
 		listener,
-		[]chan bool{},
+		[]*peer{},
 		map[string]handlers.Handler{},
 	}, nil
 }
@@ -38,7 +42,7 @@ func (n *Network) Start() {
 			continue
 		}
 
-		chStop := n.NewConn()
+		chStop := n.NewConn(conn)
 		go handler(conn, n.router, chStop)
 	}
 }
@@ -47,19 +51,22 @@ func (n *Network) Register(name string, handler handlers.Handler) {
 	n.router[name] = handler
 }
 
-func (n *Network) NewConn() chan bool {
+func (n *Network) NewConn(conn net.Conn) chan bool {
 	if len(n.peers) < 5 {
 		ch := make(chan bool, 1)
-		n.peers = append(n.peers, ch)
+		p := &peer{conn, ch}
+
+		n.peers = append(n.peers, p)
 		return ch
 	}
 
-	var x chan bool
+	var x *peer
 	x, n.peers = n.peers[0], n.peers[:1]
-	x <- true
+	x.ch <- true
 
 	ch := make(chan bool, 1)
-	n.peers = append(n.peers, ch)
+	p := &peer{conn, ch}
+	n.peers = append(n.peers, p)
 	return ch
 }
 
