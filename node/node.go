@@ -1,10 +1,10 @@
 package node
 
 import (
-	"github.com/nem0z/dlchat/handlers"
 	"github.com/nem0z/dlchat/keys"
-	"github.com/nem0z/dlchat/network"
-	"github.com/nem0z/dlchat/storage"
+	"github.com/nem0z/dlchat/node/network"
+	"github.com/nem0z/dlchat/node/network/handlers"
+	"github.com/nem0z/dlchat/node/storage"
 )
 
 type Node struct {
