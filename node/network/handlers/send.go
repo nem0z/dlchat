@@ -5,7 +5,7 @@ import (
 
 	"github.com/nem0z/dlchat/message"
 	"github.com/nem0z/dlchat/message/messages"
-	"github.com/nem0z/dlchat/storage"
+	"github.com/nem0z/dlchat/node/storage"
 )
 
 func Send(store *storage.Store) Handler {

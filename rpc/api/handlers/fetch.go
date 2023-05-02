@@ -5,9 +5,9 @@ import (
 
 	"github.com/nem0z/dlchat/message"
 	"github.com/nem0z/dlchat/message/messages"
-	"github.com/nem0z/dlchat/network"
+	"github.com/nem0z/dlchat/node/network"
+	"github.com/nem0z/dlchat/node/storage"
 	"github.com/nem0z/dlchat/rpc/types"
-	"github.com/nem0z/dlchat/storage"
 )
 
 func Fetch(network *network.Network, store *storage.Store) types.Handler {

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/nem0z/dlchat/handlers"
+	"github.com/nem0z/dlchat/node/network/handlers"
 )
 
 type peer struct {
