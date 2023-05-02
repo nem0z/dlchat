@@ -6,7 +6,6 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"fmt"
 	"math"
 	"math/big"
 
@@ -22,8 +21,8 @@ type chat struct {
 	sign   []byte
 }
 
-func (c *chat) Disp() {
-	fmt.Println(string(c.data))
+func (chat *chat) Data() []byte {
+	return chat.data
 }
 
 func Chat(data []byte) *chat {
