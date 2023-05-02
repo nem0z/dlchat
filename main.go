@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/nem0z/dlchat/node"
-	"github.com/nem0z/dlchat/rpc"
+	rpc "github.com/nem0z/dlchat/rpc/api"
 )
 
 func Handle(err error) {

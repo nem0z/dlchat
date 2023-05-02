@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/nem0z/dlchat/node"
-	"github.com/nem0z/dlchat/rpc/handlers"
+	"github.com/nem0z/dlchat/rpc/api/handlers"
 	"github.com/nem0z/dlchat/rpc/types"
 )
 
