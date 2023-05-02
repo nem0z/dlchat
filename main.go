@@ -3,9 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/nem0z/dlchat/handlers"
-	"github.com/nem0z/dlchat/network"
-	"github.com/nem0z/dlchat/storage"
+	"github.com/nem0z/dlchat/node"
+	"github.com/nem0z/dlchat/rpc"
 )
 
 func Handle(err error) {
@@ -15,15 +14,13 @@ func Handle(err error) {
 }
 
 func main() {
-	store, err := storage.Init("./database")
+	node, err := node.Init(9898, "./database", nil)
 	Handle(err)
 
-	network, err := network.Init(9898)
-	Handle(err)
+	rpcServ := rpc.Init(9999)
+	rpcServ.Start(node)
 
-	network.Register("send", handlers.Send(store))
-	network.Register("fetch", handlers.Fetch(store))
+	go node.Start()
 
-	go network.Start()
 	select {}
 }
