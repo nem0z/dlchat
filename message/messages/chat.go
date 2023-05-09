@@ -61,9 +61,7 @@ func (c *chat) ToByte() []byte {
 }
 
 func (c *chat) Sign(keys *keys.Keys) error {
-	xBytes := keys.Pub.X.Bytes()
-	yBytes := keys.Pub.Y.Bytes()
-	c.sender = append(xBytes, yBytes...)
+	c.sender = keys.PubAddr()
 
 	hash := sha256.Sum256(c.data)
 	r, s, err := ecdsa.Sign(rand.Reader, keys.Priv, hash[:])
