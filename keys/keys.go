@@ -47,6 +47,12 @@ func ImportKey(path string) (*Keys, error) {
 
 }
 
+func (k *Keys) PubAddr() []byte {
+	xBytes := k.Pub.X.Bytes()
+	yBytes := k.Pub.Y.Bytes()
+	return append(xBytes, yBytes...)
+}
+
 func (k *Keys) Export(path string) error {
 	der, err := x509.MarshalECPrivateKey(k.Priv)
 	if err != nil {
