@@ -25,6 +25,28 @@ func GenerateKeys() (*Keys, error) {
 	return &Keys{priv, &priv.PublicKey}, nil
 }
 
+func ImportKey(path string) (*Keys, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	pemData, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	pemBlock, _ := pem.Decode(pemData)
+	privKey, err := x509.ParseECPrivateKey(pemBlock.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Keys{privKey, &privKey.PublicKey}, nil
+
+}
+
 func (k *Keys) Export(path string) error {
 	der, err := x509.MarshalECPrivateKey(k.Priv)
 	if err != nil {
