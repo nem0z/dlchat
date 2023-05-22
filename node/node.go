@@ -25,7 +25,7 @@ func Init(port int, path string, k *keys.Keys) (*Node, error) {
 	}
 
 	if k == nil {
-		k, err = keys.GenerateKeys()
+		k, err = keys.Generate()
 	}
 
 	network.Register("send", handlers.Send(store))

@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/nem0z/dlchat/keys"
 	"github.com/nem0z/dlchat/node"
 	rpc "github.com/nem0z/dlchat/rpc/api"
 )
@@ -21,7 +22,12 @@ func main() {
 	execDir := filepath.Dir(execFile)
 	dbDir := filepath.Join(execDir, "database")
 
-	node, err := node.Init(9898, dbDir, nil)
+	keys, err := keys.Import("keys.pem")
+	if err != nil {
+		keys = nil
+	}
+	keys.Export("keys.pem")
+	node, err := node.Init(9898, dbDir, keys)
 	Handle(err)
 
 	rpcServ := rpc.Init(9999)
