@@ -15,7 +15,7 @@ type Keys struct {
 	Pub  *ecdsa.PublicKey
 }
 
-func GenerateKeys() (*Keys, error) {
+func Generate() (*Keys, error) {
 	curve := elliptic.P256()
 	priv, err := ecdsa.GenerateKey(curve, rand.Reader)
 	if err != nil {
@@ -25,7 +25,7 @@ func GenerateKeys() (*Keys, error) {
 	return &Keys{priv, &priv.PublicKey}, nil
 }
 
-func ImportKey(path string) (*Keys, error) {
+func Import(path string) (*Keys, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
