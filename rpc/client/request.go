@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"os"
 
@@ -40,8 +41,11 @@ func Send(endpoint string, req *bytes.Buffer) (*types.Response, error) {
 	body := make([]byte, resp.ContentLength)
 	_, err = resp.Body.Read(body)
 
+	if err != nil && err != io.EOF {
+		return nil, err
+	}
+
 	rpcResp := &types.Response{}
 	err = json.Unmarshal(body, rpcResp)
-
 	return rpcResp, err
 }
