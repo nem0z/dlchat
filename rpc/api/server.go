@@ -43,26 +43,31 @@ func (rpc *RpcServer) handle() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		body := make([]byte, r.ContentLength)
 		_, err := r.Body.Read(body)
+
+		w.Header().Set("Content-Type", "application/json")
+
 		if err != nil && err != io.EOF {
-			http.Error(w, "Error reading request body", http.StatusBadRequest)
+			resp := types.Response{Err: "Error reading request body"}
+			json.NewEncoder(w).Encode(resp)
 			return
 		}
 
 		req := &types.Request{}
 		err = json.Unmarshal(body, req)
 		if err != nil {
-			http.Error(w, "Invalid request format", http.StatusBadRequest)
+			resp := types.Response{Err: "Invalid request format"}
+			json.NewEncoder(w).Encode(resp)
 			return
 		}
 
 		handler, ok := rpc.handlers[req.Method]
 		if !ok {
-			http.Error(w, "Method not supported", http.StatusBadRequest)
+			resp := types.Response{Err: "Method not supported"}
+			json.NewEncoder(w).Encode(resp)
 			return
 		}
 
 		resp := handler(req.Params)
-		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
 	}
 }
